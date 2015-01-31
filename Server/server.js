@@ -63,8 +63,7 @@ wss.on('connection', function (ws) {
                                 'error': 'Room is Full'
                             }));
                         } else {
-                            var length = room[mess.room].length;
-                            room[mess.room][length - 1] = {
+                            room[mess.room].push = {
                                 'id': 2,
                                 'ws': ws
                             };
