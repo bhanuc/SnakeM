@@ -92,11 +92,10 @@ wss.on('connection', function (ws) {
                         }
                         break;
                     }
-                }
             }
         } else {
             console.log("no object");
         }
         // wss.broadcast(message);
-    );
+    });
 });
