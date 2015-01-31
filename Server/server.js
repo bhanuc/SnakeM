@@ -93,7 +93,7 @@ wss.on('connection', function (ws) {
                             'ws': ws
                                         }];
 
-                        room[mess.room][i].ws.send(JSON.stringify({
+                        room[mess.room][0].ws.send(JSON.stringify({
                             "type": "join",
                             // "list": room[mess.room],
                             "join": 1,
