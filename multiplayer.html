@@ -1133,7 +1133,7 @@
         }
         else if(data.type == "setid"){
           localStorage.clear();
-          localStorage.setItem("user", JSON.stringify({id : data.id, name: data.name, room : data.room;}));
+          localStorage.setItem("user", JSON.stringify({id : data.id, name: data.name, room : data.room}));
           $("#start").css("display", "none");
           initLoading();
         }
