@@ -204,7 +204,7 @@
     <script src="api/threejs/js/libs/stats.min.js"></script>
 
     <script>
-      var name, room , id;   
+      var id;   
       var container;
       var stats;
       var messageBox;
@@ -992,7 +992,8 @@
     <script>
       document.onkeydown = function key_event(evt){
         var key = evt.keyCode;
-        ws.send(JSON.stringify({type:"move",room:room, move:key,name:name, id:id  }));
+        var obj = JSON.parse(localStorage.getItem("user"));
+        ws.send(JSON.stringify({type:"move",room:obj.room, move:key,name:obj.name, id:obj.id  }));
       }
       ws.onmessage = function (event) {
         console.log(event);
@@ -1131,9 +1132,7 @@
           }
         }
         else if(data.type == "setid"){
-          id = data.id;
-          name = data.name;
-          room = data.room;
+          localStorage.setItem("user", JSON.stringify({id = data.id, name = data.name, room = data.room;}));
           $("#start").css("display", "none");
           initLoading();
         }
