@@ -944,11 +944,14 @@
         return angle*180.00/Math.PI;
       }
   
-      
+          function sendmessage(){
+        ws.send({'helloe': 'ss'});
+    }
     </script>
   
      <canvas id="canvasframe" class="renderframe"></canvas>
-    <div class="sectionBox" id="leftsection"><b>Controls:</b><br>Start/Restart: S<br>Movement: Arrow Keys<br>Pause: P<br>Resume: R<br><br><b>API:</b><br></div>
+    <div class="sectionBox" id="leftsection"><b>Controls:</b><br>Start/Restart: S<br>Movement: Arrow Keys<br>Pause: P<br>Resume: R<br><br><b>API:</b><br>
+         <button  onclick="sendmessage()">SEND M</button></div>
             
     <div class="alertmessage" id="helpmessage">Press S to Start Game</div>
     <header id="headersection">Simple 3D Snake Game</header>
