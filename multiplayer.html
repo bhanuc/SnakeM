@@ -296,140 +296,140 @@
       }
           
       
-      function checkKeyboardStroke(){
-        document.onkeydown = function key_event(evt){
-          var key = evt.keyCode;
-          console.log
-          if(keyboard.pressed("p") ){
-            if(!(gameOverFlag > 0)){
-              keyPressed = "P";
-              keyNextPressed = "P";
-              pauseFlag = 1;
+      // function checkKeyboardStroke(){
+      //   document.onkeydown = function key_event(evt){
+      //     var key = evt.keyCode;
+      //     console.log
+      //     if(keyboard.pressed("p") ){
+      //       if(!(gameOverFlag > 0)){
+      //         keyPressed = "P";
+      //         keyNextPressed = "P";
+      //         pauseFlag = 1;
           
-              messageBox.css("visibility","visible");
-              alertVisibleFlag = 1;
-              triggerAnimation("animated bounce", 1, gameResumeString);
-            }
+      //         messageBox.css("visibility","visible");
+      //         alertVisibleFlag = 1;
+      //         triggerAnimation("animated bounce", 1, gameResumeString);
+      //       }
             
-          } else if(keyboard.pressed("r") ){
+      //     } else if(keyboard.pressed("r") ){
             
-            if(!(gameOverFlag > 0)){
+      //       if(!(gameOverFlag > 0)){
           
-              alertVisibleFlag = 0;
-              triggerAnimation("animated fadeOutDown", 0, gameResumeString);
-            }
+      //         alertVisibleFlag = 0;
+      //         triggerAnimation("animated fadeOutDown", 0, gameResumeString);
+      //       }
             
-            keyPressed = lastArrowKeyPressed;
-            keyNextPressed = lastNextArrowKeyPressed;
-            pauseFlag = 0;
+      //       keyPressed = lastArrowKeyPressed;
+      //       keyNextPressed = lastNextArrowKeyPressed;
+      //       pauseFlag = 0;
             
-          }
-          if(pauseFlag == 0){  
-          if(keyboard.pressed("s") ){
+      //     }
+      //     if(pauseFlag == 0){  
+      //     if(keyboard.pressed("s") ){
         
-              keyPressed = "right";
-              keyNextPressed = "right";
+      //         keyPressed = "right";
+      //         keyNextPressed = "right";
 
-              lastArrowKeyPressed = "right";
-              lastNextArrowKeyPressed = "right";
+      //         lastArrowKeyPressed = "right";
+      //         lastNextArrowKeyPressed = "right";
 
-              if(gameOverFlag == 1){
-                alertVisibleFlag = 0;
-                triggerAnimation("animated fadeOutDown", 0, gameOverString);
-              }else{
-                alertVisibleFlag = 0;
-                triggerAnimation("animated fadeOutDown", 0, gameStartString);
-              }
+      //         if(gameOverFlag == 1){
+      //           alertVisibleFlag = 0;
+      //           triggerAnimation("animated fadeOutDown", 0, gameOverString);
+      //         }else{
+      //           alertVisibleFlag = 0;
+      //           triggerAnimation("animated fadeOutDown", 0, gameStartString);
+      //         }
               
-              var obj;
-              for(var i = snakeGroup.children.length-1; i>=0; i--)
-              {
-                obj = snakeGroup.children[i];
-                snakeGroup.remove(obj);
-              }
+      //         var obj;
+      //         for(var i = snakeGroup.children.length-1; i>=0; i--)
+      //         {
+      //           obj = snakeGroup.children[i];
+      //           snakeGroup.remove(obj);
+      //         }
 
-              for(var i = snakeNextGroup.children.length-1; i>=0; i--)
-              {
-                obj = snakeNextGroup.children[i];
-                snakeNextGroup.remove(obj);
-              }
+      //         for(var i = snakeNextGroup.children.length-1; i>=0; i--)
+      //         {
+      //           obj = snakeNextGroup.children[i];
+      //           snakeNextGroup.remove(obj);
+      //         }
               
-              gameStepTime = 100;
-              foodScore = 0;
-              foodNextScore = 0;
-              levelRatio = 2;
-              pauseFlag = 1;
+      //         gameStepTime = 100;
+      //         foodScore = 0;
+      //         foodNextScore = 0;
+      //         levelRatio = 2;
+      //         pauseFlag = 1;
 
-              create_snake();
-              create_next_snake();
-              create_3D_snake();
-              create_next_3D_snake();
-              create_food();
+      //         create_snake();
+      //         create_next_snake();
+      //         create_3D_snake();
+      //         create_next_3D_snake();
+      //         var food = create_food();
               
-              gameOverFlag = 0;
+      //         gameOverFlag = 0;
                 
-              removeScoreTextGeometry();
-              setScoreTextGeometry(10*foodScore);
+      //         removeScoreTextGeometry();
+      //         setScoreTextGeometry(10*foodScore);
               
                 
-              pauseFlag = 0;  
-            }
-          }
-          if(pauseFlag == 0)
-          {
-            var currentTimeStamp = Date.now();
+      //         pauseFlag = 0;  
+      //       }
+      //     }
+      //     if(pauseFlag == 0)
+      //     {
+      //       var currentTimeStamp = Date.now();
 
-            var timeStampDif = 10;
-            var currentTimeStampDif = currentTimeStamp - lastKeyPressTimeStamp;
-            var currentNextTimeStampDif = currentTimeStamp - lastNextKeyPressTimeStamp;
-            if( key == 39  && keyPressed != "left" && keyPressed != "right" && currentTimeStampDif>timeStampDif){
-              keyPressed = "right";  
-              lastArrowKeyPressed = keyPressed;
-              lastKeyPressTimeStamp = currentTimeStamp;
+      //       var timeStampDif = 10;
+      //       var currentTimeStampDif = currentTimeStamp - lastKeyPressTimeStamp;
+      //       var currentNextTimeStampDif = currentTimeStamp - lastNextKeyPressTimeStamp;
+      //       if( key == 39  && keyPressed != "left" && keyPressed != "right" && currentTimeStampDif>timeStampDif){
+      //         keyPressed = "right";  
+      //         lastArrowKeyPressed = keyPressed;
+      //         lastKeyPressTimeStamp = currentTimeStamp;
               
-            }
-            else if(key == 37  && keyPressed != "right" && keyPressed != "left" && currentTimeStampDif>timeStampDif){
-              keyPressed = "left";  
-              lastArrowKeyPressed = keyPressed;
-              lastKeyPressTimeStamp = currentTimeStamp;
-            }
-            else if(key == 38  && keyPressed != "down" && keyPressed != "up" && currentTimeStampDif>timeStampDif){
-              keyPressed = "up";  
-              lastArrowKeyPressed = keyPressed;
-              lastKeyPressTimeStamp = currentTimeStamp;
-            }
-            else if(key == 40 && keyPressed != "up" && keyPressed != "down" && currentTimeStampDif>timeStampDif){
-              keyPressed = "down";  
-              lastArrowKeyPressed = keyPressed;
-              lastKeyPressTimeStamp = currentTimeStamp;
-            }
+      //       }
+      //       else if(key == 37  && keyPressed != "right" && keyPressed != "left" && currentTimeStampDif>timeStampDif){
+      //         keyPressed = "left";  
+      //         lastArrowKeyPressed = keyPressed;
+      //         lastKeyPressTimeStamp = currentTimeStamp;
+      //       }
+      //       else if(key == 38  && keyPressed != "down" && keyPressed != "up" && currentTimeStampDif>timeStampDif){
+      //         keyPressed = "up";  
+      //         lastArrowKeyPressed = keyPressed;
+      //         lastKeyPressTimeStamp = currentTimeStamp;
+      //       }
+      //       else if(key == 40 && keyPressed != "up" && keyPressed != "down" && currentTimeStampDif>timeStampDif){
+      //         keyPressed = "down";  
+      //         lastArrowKeyPressed = keyPressed;
+      //         lastKeyPressTimeStamp = currentTimeStamp;
+      //       }
 
-            if( key == 68  && keyNextPressed != "left" && keyNextPressed != "right" && currentNextTimeStampDif>timeStampDif){
-              keyNextPressed = "right";  
-              lastNextArrowKeyPressed = keyNextPressed;
-              lastNextKeyPressTimeStamp = currentTimeStamp;
+      //       if( key == 68  && keyNextPressed != "left" && keyNextPressed != "right" && currentNextTimeStampDif>timeStampDif){
+      //         keyNextPressed = "right";  
+      //         lastNextArrowKeyPressed = keyNextPressed;
+      //         lastNextKeyPressTimeStamp = currentTimeStamp;
               
-            }
-            else if(key == 65  && keyNextPressed != "right" && keyNextPressed != "left" && currentNextTimeStampDif>timeStampDif){
-              keyNextPressed = "left";  
-              lastNextArrowKeyPressed = keyNextPressed;
-              lastNextKeyPressTimeStamp = currentTimeStamp;
-            }
-            else if(key == 87  && keyNextPressed != "down" && keyNextPressed != "up" && currentNextTimeStampDif>timeStampDif){
-              keyNextPressed = "up";  
-              lastNextArrowKeyPressed = keyNextPressed;
-              lastNextKeyPressTimeStamp = currentTimeStamp;
-            }
-            else if(key == 88 && keyNextPressed != "up" && keyNextPressed != "down" && currentNextTimeStampDif>timeStampDif){
-              keyNextPressed = "down";  
-              lastNextArrowKeyPressed = keyNextPressed;
-              lastNextKeyPressTimeStamp = currentTimeStamp;
-            }
-          }
+      //       }
+      //       else if(key == 65  && keyNextPressed != "right" && keyNextPressed != "left" && currentNextTimeStampDif>timeStampDif){
+      //         keyNextPressed = "left";  
+      //         lastNextArrowKeyPressed = keyNextPressed;
+      //         lastNextKeyPressTimeStamp = currentTimeStamp;
+      //       }
+      //       else if(key == 87  && keyNextPressed != "down" && keyNextPressed != "up" && currentNextTimeStampDif>timeStampDif){
+      //         keyNextPressed = "up";  
+      //         lastNextArrowKeyPressed = keyNextPressed;
+      //         lastNextKeyPressTimeStamp = currentTimeStamp;
+      //       }
+      //       else if(key == 88 && keyNextPressed != "up" && keyNextPressed != "down" && currentNextTimeStampDif>timeStampDif){
+      //         keyNextPressed = "down";  
+      //         lastNextArrowKeyPressed = keyNextPressed;
+      //         lastNextKeyPressTimeStamp = currentTimeStamp;
+      //       }
+      //     }
           
-          if(key) evt.preventDefault();
-        }
-      }
+      //     if(key) evt.preventDefault();
+      //   }
+      // }
       
       function create_snake(){
         var length = 5;
@@ -483,8 +483,8 @@
                   x: row,
                   y: col,
                 };
-                var obj = JSON.parse(localStorage.getItem("user"));
-                ws.send(JSON.stringify({type:"food",room:obj.room, food: food, name:obj.name, id:obj.id  }));
+                return food;
+                
                 
                 // var foodCubeGeometry = new THREE.SphereGeometry(snakeCubeSize, 20, 20);
                 // foodCube = new THREE.Mesh(foodCubeGeometry, foodcubeMaterial);
@@ -544,8 +544,8 @@
         if(snakeXStep == food.x && snakeYStep == food.y)
         {
           tail = {x: snakeXStep, y: snakeYStep};  
-          create_food();
-          
+          var food = create_food();
+          ws.send(JSON.stringify({type:"food",room:obj.room, food: food, name:obj.name, id:obj.id, first: false  }));
           foodScore++;
         
           var snakeCubeGeometry = new THREE.CubeGeometry(snakeCubeSize, snakeCubeSize, snakeCubeSize);
@@ -621,8 +621,8 @@
         if(snakeNextXStep == food.x && snakeNextYStep == food.y)
         {
           nextTail = {x: snakeNextXStep, y: snakeNextYStep};  
-          create_food();
-          
+          var food = create_food();
+          ws.send(JSON.stringify({type:"food",room:obj.room, food: food, name:obj.name, id:obj.id, first: false  }));
           foodNextScore++;
         
           var snakeCubeGeometry = new THREE.CubeGeometry(snakeCubeSize, snakeCubeSize, snakeCubeSize);
@@ -809,7 +809,10 @@
         var obj = JSON.parse(localStorage.getItem("user"));
         if(obj.id == 1){
           console.log("Creating food");
-          create_food();
+          var food = create_food();
+          ws.send(JSON.stringify({type:"food",room:obj.room, food: food, name:obj.name, id:obj.id, first: false  }));
+          setSnakeCube();
+            setNextSnakeCube();
         }
               var ambientLight = new THREE.AmbientLight(0xcccccc);
                scene.add(ambientLight);
@@ -972,8 +975,8 @@
         if(frameTime >= gameStepTime){
           
           if(pauseFlag==0 && gameOverFlag==0){
-            setSnakeCube();
-            setNextSnakeCube();
+            // setSnakeCube();
+            // setNextSnakeCube();
             checkLevelRatio();
           }
           
@@ -1088,7 +1091,10 @@
               var obj = JSON.parse(localStorage.getItem("user"));
               if(obj.id == 1){
                 console.log("Creating food");
-                create_food();
+                var food = create_food();
+                ws.send(JSON.stringify({type:"food",room:obj.room, food: food, name:obj.name, id:obj.id, first: true  }));
+                setSnakeCube();
+                setNextSnakeCube();
               }
               
               gameOverFlag = 0;
