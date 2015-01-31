@@ -10,13 +10,15 @@ server.listen(8080);
 
 var wss = new WebSocketServer({server: server});
 wss.on('connection', function(ws) {
+      wss.on('message', function incoming(message) {
+    console.log('received: %s', message.data);
+                    wss.send(JSON.parse(message.data));
+
+  });
+    
   ws.send(JSON.stringify({'connected': true}));
   ws.on('move', function(data, flags) {
     ws.send(JSON.stringify({'move': data}));
   });
 });
 
-      wss.onmessage = function (event) {
-        console.log(JSON.parse(event.data));
-          ws.send(JSON.parse(event.data));
-      };
