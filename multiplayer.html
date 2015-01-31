@@ -939,7 +939,7 @@
       function animate() {
         requestAnimationFrame( animate );
         render();
-        checkKeyboardStroke();
+      //  checkKeyboardStroke();
         stats.update();
       }
       
@@ -997,9 +997,9 @@
       ws.onmessage = function (event) {
         console.log(event);
         var data = JSON.parse(event.data)
-        if(data.action == "move"){
-          var key = event.data.key ;
-          var identity = event.data.id ;
+        if(data.type == "move"){
+          var key = data.move ;
+          var id = data.id ;
           if(key == 80 ){           //P
             if(!(gameOverFlag > 0)){
               keyPressed = "P";
