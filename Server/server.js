@@ -9,16 +9,15 @@ var server = http.createServer(app);
 server.listen(8080);
 
 var wss = new WebSocketServer({server: server});
-wss.on('connection', function(ws) {
-      wss.on('message', function incoming(message) {
-    console.log('received: %s', message.data);
-                    wss.send(JSON.parse(message.data));
+wss.broadcast = function(data) {
+  for (var i in this.clients)
+    this.clients[i].send(data);
+};
 
+// use like this:
+wss.on('connection', function(ws) {
+  ws.on('message', function(message) {
+    wss.broadcast(message);
   });
-    
-  ws.send(JSON.stringify({'connected': true}));
-//  ws.on('move', function(data, flags) {
-//    ws.send(JSON.stringify({'move': data}));
-//  });
 });
 
