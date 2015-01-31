@@ -130,6 +130,30 @@ wss.on('connection', function (ws) {
                             }));
                         }
                         break;
+                    }
+                case "food":
+                    if (room.hasOwnProperty(mess.room) && room[mess.room].length == 2) {
+                        console.log("food");
+                        if (mess.hasOwnProperty('room')) {
+                            room[mess.room][0].ws.send(JSON.stringify({
+                                "type": "food",
+                                "food": mess.food,
+                                "name": mess.name,
+                                "id": mess.id
+                            }));
+                            room[mess.room][1].ws.send(JSON.stringify({
+                                "type": "food",
+                                "food": mess.food,
+                                "name": mess.name,
+                                "id": mess.id
+                            }));
+                        } else {
+                            ws.send(JSON.stringify({
+                                "type": "error",
+                                'error': 'Please Use a Room'
+                            }));
+                        }
+                        break;
                     } else {
                         console.log("waiting for player");
                     }
