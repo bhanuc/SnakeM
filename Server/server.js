@@ -10,7 +10,8 @@ server.listen(8080);
 
 var wss = new WebSocketServer({server: server});
 wss.on('connection', function(ws) {
-  console.log('started ');
+    console.log(ws);
+  ws.send(JSON.Stringify({'connected': true});
   ws.on('move', function(data, flags) {
     ws.send(JSON.Stringify({'move': data}));
   });

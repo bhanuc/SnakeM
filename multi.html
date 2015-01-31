@@ -8,7 +8,10 @@
     <link rel="stylesheet" href="css/animate.css">
     <link rel="stylesheet" href="css/snake.css">
     <script>
-
+      var ws = new WebSocket('ws://128.199.124.144:8080');
+              ws.onmessage = function (event) {
+                  console.log(event);
+              };
       var wegGLSupportFlag = 1;
       var timer;
       var noWebGLSupportString = "<b>Sorry!!<br><br>Your browser does not have WebGL support.<br><br>Please use latest Chrome browser.<br><br><br></b>";
