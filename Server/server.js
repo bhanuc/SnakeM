@@ -21,7 +21,7 @@ var wss = new WebSocketServer({
 
 wss.on('connection', function (ws) {
     ws.on('message', function (message) {
-        console.log(message);
+        console.log(JSON.stringify(message));
         if (message.hasOwnProperty("data")) {
             var mess = JSON.parse(message.data);
 
