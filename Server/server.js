@@ -68,14 +68,18 @@ wss.on('connection', function (ws) {
                                 'id': 2,
                                 'ws': ws
                             };
-                            for (var i = 0; i < room[mess.room].length; i++) {
-                                room[mess.room][i].ws.send(JSON.stringify({
-                                    "type": "join",
-                                    // "list": room[mess.room],
-                                    "join": 2,
-                                    "name": mess.name
-                                }));
-                            }
+                            room[mess.room][0].ws.send(JSON.stringify({
+                                "type": "join",
+                                // "list": room[mess.room],
+                                "join": 2,
+                                "name": mess.name
+                            }));
+                            room[mess.room][1].ws.send(JSON.stringify({
+                                "type": "join",
+                                // "list": room[mess.room],
+                                "join": 2,
+                                "name": mess.name
+                            }));
                             ws.send(JSON.stringify({
                                 "type": "setid",
                                 'id': 2,
@@ -88,14 +92,13 @@ wss.on('connection', function (ws) {
                             'id': 1,
                             'ws': ws
                                         }];
-                        for (var i = 0; i < room[mess.room].length; i++) {
-                            room[mess.room][i].ws.send(JSON.stringify({
-                                "type": "join",
-                                // "list": room[mess.room],
-                                "join": 1,
-                                "name": mess.name
-                            }));
-                        }
+
+                        room[mess.room][i].ws.send(JSON.stringify({
+                            "type": "join",
+                            // "list": room[mess.room],
+                            "join": 1,
+                            "name": mess.name
+                        }));
                         ws.send(JSON.stringify({
                             "type": "setid",
                             'id': 1,
@@ -105,17 +108,21 @@ wss.on('connection', function (ws) {
                     }
                     break;
                 case "move":
-                        console.log("move");
+                    console.log("move");
                     if (mess.hasOwnProperty('room')) {
-                        for (var i = 0; i < room[mess.room].length; i++) {
-                            console.log(room[mess.room][i]);
-                            room[mess.room][i].ws.send(JSON.stringify({
-                                "type": "move",
-                                "move": mess.move,
-                                "name": mess.name,
-                                "id": mess.id
-                            }));
-                        }
+                        console.log(room[mess.room][i]);
+                        room[mess.room][0].ws.send(JSON.stringify({
+                            "type": "move",
+                            "move": mess.move,
+                            "name": mess.name,
+                            "id": mess.id
+                        }));
+                        room[mess.room][1].ws.send(JSON.stringify({
+                            "type": "move",
+                            "move": mess.move,
+                            "name": mess.name,
+                            "id": mess.id
+                        }));
                     } else {
                         ws.send(JSON.stringify({
                             "type": "error",
