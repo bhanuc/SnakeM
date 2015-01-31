@@ -21,9 +21,8 @@ var wss = new WebSocketServer({
 
 wss.on('connection', function (ws) {
     ws.on('message', function (message) {
-        console.log(JSON.stringify(message));
-        if (message.hasOwnProperty("data")) {
-            var mess = JSON.parse(message.data);
+            console.log(JSON.stringify(message));
+            var mess = JSON.parse(message);
 
             if (mess.hasOwnProperty('type')) {
                 switch (mess.type) {
@@ -93,9 +92,7 @@ wss.on('connection', function (ws) {
                     break;
                 }
             }
-        } else {
-            console.log("No data");
-        }
+        } 
         // wss.broadcast(message);
-    });
+    );
 });
