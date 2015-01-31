@@ -16,7 +16,7 @@ wss.on('connection', function(ws) {
   });
 });
 
-      ws.onmessage = function (event) {
+      wss.onmessage = function (event) {
         console.log(JSON.parse(event.data));
           ws.send(JSON.parse(event.data));
       };
