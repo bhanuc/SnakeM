@@ -1080,7 +1080,7 @@
             var currentTimeStamp = Date.now();
             var timeStampDif = 10;
 
-            if(identity == 1){
+            if(id == 1){
               var currentTimeStampDif = currentTimeStamp - lastKeyPressTimeStamp;
               if( key == 39  && keyPressed != "left" && keyPressed != "right" && currentTimeStampDif>timeStampDif){
                 keyPressed = "right";  
@@ -1103,7 +1103,7 @@
                 lastArrowKeyPressed = keyPressed;
                 lastKeyPressTimeStamp = currentTimeStamp;
               }
-            } else if(identity == 2){ 
+            } else if(id == 2){ 
                 var currentNextTimeStampDif = currentTimeStamp - lastNextKeyPressTimeStamp;
                 if( key == 39  && keyNextPressed != "left" && keyNextPressed != "right" && currentNextTimeStampDif>timeStampDif){
                   keyNextPressed = "right";  
