@@ -212,6 +212,7 @@
       var platformGroup, snakeGroup, snakeNextGroup, foodGroup, lightGroup;
       var lightLampGroup;
       var scoreBoardGroup, displayMenuGroup;
+      var scoreNextBoardGroup;
       
       var scoreTextMesh;
       
@@ -223,10 +224,12 @@
       
       var row, col;
       var foodScore = 0;
+      var foodNextScore = 0;
       var levelRatio = 4;
       
       var delta, timer;
       var lastKeyPressTimeStamp = 0;
+      var lastNextKeyPressTimeStamp = 0;
       
       var foodCube, foodcubeMaterial;
       
@@ -352,6 +355,7 @@
               
               gameStepTime = 100;
               foodScore = 0;
+              foodNextScore = 0;
               levelRatio = 2;
               pauseFlag = 1;
 
@@ -376,6 +380,7 @@
 
             var timeStampDif = 10;
             var currentTimeStampDif = currentTimeStamp - lastKeyPressTimeStamp;
+            var currentNextTimeStampDif = currentTimeStamp - lastNextKeyPressTimeStamp;
             if( key == 39  && keyPressed != "left" && keyPressed != "right" && currentTimeStampDif>timeStampDif){
               keyPressed = "right";  
               lastArrowKeyPressed = keyPressed;
@@ -398,26 +403,26 @@
               lastKeyPressTimeStamp = currentTimeStamp;
             }
 
-            if( key == 68  && keyNextPressed != "left" && keyNextPressed != "right" && currentTimeStampDif>timeStampDif){
+            if( key == 68  && keyNextPressed != "left" && keyNextPressed != "right" && currentNextTimeStampDif>timeStampDif){
               keyNextPressed = "right";  
               lastNextArrowKeyPressed = keyNextPressed;
-              lastKeyPressTimeStamp = currentTimeStamp;
+              lastNextKeyPressTimeStamp = currentTimeStamp;
               
             }
-            else if(key == 65  && keyNextPressed != "right" && keyNextPressed != "left" && currentTimeStampDif>timeStampDif){
+            else if(key == 65  && keyNextPressed != "right" && keyNextPressed != "left" && currentNextTimeStampDif>timeStampDif){
               keyNextPressed = "left";  
               lastNextArrowKeyPressed = keyNextPressed;
-              lastKeyPressTimeStamp = currentTimeStamp;
+              lastNextKeyPressTimeStamp = currentTimeStamp;
             }
-            else if(key == 87  && keyNextPressed != "down" && keyNextPressed != "up" && currentTimeStampDif>timeStampDif){
+            else if(key == 87  && keyNextPressed != "down" && keyNextPressed != "up" && currentNextTimeStampDif>timeStampDif){
               keyNextPressed = "up";  
               lastNextArrowKeyPressed = keyNextPressed;
-              lastKeyPressTimeStamp = currentTimeStamp;
+              lastNextKeyPressTimeStamp = currentTimeStamp;
             }
-            else if(key == 88 && keyNextPressed != "up" && keyNextPressed != "down" && currentTimeStampDif>timeStampDif){
+            else if(key == 88 && keyNextPressed != "up" && keyNextPressed != "down" && currentNextTimeStampDif>timeStampDif){
               keyNextPressed = "down";  
               lastNextArrowKeyPressed = keyNextPressed;
-              lastKeyPressTimeStamp = currentTimeStamp;
+              lastNextKeyPressTimeStamp = currentTimeStamp;
             }
           }
           
@@ -602,7 +607,7 @@
           nextTail = {x: snakeNextXStep, y: snakeNextYStep};  
           create_food();
           
-          foodScore++;
+          foodNextScore++;
         
           var snakeCubeGeometry = new THREE.CubeGeometry(snakeCubeSize, snakeCubeSize, snakeCubeSize);
           snakeCube = new THREE.Mesh(snakeCubeGeometry, snakeNextMaterial);
@@ -611,8 +616,8 @@
           snakeCube.receiveShadow = true;
           snakeNextGroup.add(snakeCube);
       
-          removeScoreTextGeometry();
-          setScoreTextGeometry(10*foodScore);
+          //removeScoreTextGeometry();
+          //setScoreTextGeometry(10*foodNextScore);
           
         }else
         {
@@ -723,6 +728,9 @@
         
         scoreBoardGroup = new THREE.Object3D();
         scene.add( scoreBoardGroup );
+
+        scoreNextBoardGroup = new THREE.Object3D();
+        scene.add( scoreNextBoardGroup );
         
         snakeGroup = new THREE.Object3D();
         scene.add( snakeGroup );
@@ -838,12 +846,7 @@
         scorePlatformCube.castShadow = true;
         scorePlatformCube.receiveShadow = true;
           scoreBoardGroup.add(scorePlatformCube);
-  
-        scorePlatformCube = new THREE.Mesh(scorePlatformCubeGeometry, scorePlatformMaterial);
-        scorePlatformCube.position.set((platformWidth-scorePlatformWidth)*3/2-snakeCubeSize, snakeCubeSize*2.8, -snakeCubeSize);
-        scorePlatformCube.castShadow = true;
-        scorePlatformCube.receiveShadow = true;
-          scoreBoardGroup.add(scorePlatformCube);
+
         setScoreTextLabelGeometry();
         setScoreTextGeometry(foodScore);
     
@@ -854,10 +857,10 @@
           var scorePlatformWidth = platformWidth/1.5;
           var textMaterial = new THREE.MeshBasicMaterial({ color: 0x00bbbb });
                     
-          scoreTextMesh = new THREE.Mesh( getTextGeometry("Score: ", "gentilis"), textMaterial );
+          scoreTextMesh = new THREE.Mesh( getTextGeometry("Score", "gentilis"), textMaterial );
           scoreTextMesh.castShadow = true;
           scoreTextMesh.receiveShadow = true;
-          scoreTextMesh.position.set((platformWidth-scorePlatformWidth)*3/2-snakeCubeSize*6, snakeCubeSize*3.2, -snakeCubeSize);
+          scoreTextMesh.position.set((platformWidth-scorePlatformWidth)*3/2-snakeCubeSize*3, snakeCubeSize*3.2, -snakeCubeSize);
           scoreBoardGroup.add(scoreTextMesh);
       }
       
@@ -869,7 +872,7 @@
           scoreTextMesh = new THREE.Mesh( getTextGeometry(scoreString, "gentilis"), textMaterial );
           scoreTextMesh.castShadow = true;
           scoreTextMesh.receiveShadow = true;
-          scoreTextMesh.position.set((platformWidth-scorePlatformWidth)*3/2+snakeCubeSize, snakeCubeSize*3.2, -snakeCubeSize);
+          scoreTextMesh.position.set((platformWidth-scorePlatformWidth)*3/2-snakeCubeSize*6, snakeCubeSize*3.2, -snakeCubeSize);
           scoreBoardGroup.add(scoreTextMesh);
       }
       
@@ -979,11 +982,85 @@
     </script>
   
      <canvas id="canvasframe" class="renderframe"></canvas>
-    <div class="sectionBox" id="leftsection"><b>Controls:</b><br>Start/Restart: S<br>Movement: Arrow Keys<br>Pause: P<br>Resume: R<br><br><b>API:</b><br></div>
+    <!-- <div class="sectionBox" id="leftsection"><b>Controls:</b><br>Start/Restart: S<br>Movement: Arrow Keys<br>Pause: P<br>Resume: R<br><br><b>API:</b><br></div> -->
+    <div class="sectionBox" id="leftsection">
+            <button class="key" data-code="83">S</button> <br><br><br>
+            <button class="key" data-code="38"> up</button><br>
+            <button class="key" data-code="37">left</button>
+            <button class="key" data-code="39">right</button><br >
+            <button class="key" data-code="40">down</button><br>
+            <!--<b>Controls:</b>
+            <br>Start/Restart: S<br>
+            Movement: Arrow Keys<br>
+            Pause: P<br>
+            Resume: R<br>
+            <br>
+            <b>API:</b><br>-->
+        </div>
             
     <div class="alertmessage" id="helpmessage">Press S to Start Game</div>
     <header id="headersection">Simple 3D Snake Game</header>
     </div>
+    <script>
+// $(".key").click(function (e) {
+//   // console.log(e);
+//   var key = $(this).data('code');
+          
+//           if(pauseFlag == 0)
+//           {
+//             var currentTimeStamp = Date.now();
+
+//             var timeStampDif = 10;
+//             var currentTimeStampDif = currentTimeStamp - lastKeyPressTimeStamp;
+//             var currentNextTimeStampDif = currentTimeStamp - lastNextKeyPressTimeStamp;
+//             if( key == 39  && keyPressed != "left" && keyPressed != "right" && currentTimeStampDif>timeStampDif){
+//               keyPressed = "right";  
+//               lastArrowKeyPressed = keyPressed;
+//               lastKeyPressTimeStamp = currentTimeStamp;
+              
+//             }
+//             else if(key == 37  && keyPressed != "right" && keyPressed != "left" && currentTimeStampDif>timeStampDif){
+//               keyPressed = "left";  
+//               lastArrowKeyPressed = keyPressed;
+//               lastKeyPressTimeStamp = currentTimeStamp;
+//             }
+//             else if(key == 38  && keyPressed != "down" && keyPressed != "up" && currentTimeStampDif>timeStampDif){
+//               keyPressed = "up";  
+//               lastArrowKeyPressed = keyPressed;
+//               lastKeyPressTimeStamp = currentTimeStamp;
+//             }
+//             else if(key == 40 && keyPressed != "up" && keyPressed != "down" && currentTimeStampDif>timeStampDif){
+//               keyPressed = "down";  
+//               lastArrowKeyPressed = keyPressed;
+//               lastKeyPressTimeStamp = currentTimeStamp;
+//             }
+
+//             if( key == 68  && keyNextPressed != "left" && keyNextPressed != "right" && currentNextTimeStampDif>timeStampDif){
+//               keyNextPressed = "right";  
+//               lastNextArrowKeyPressed = keyNextPressed;
+//               lastNextKeyPressTimeStamp = currentTimeStamp;
+              
+//             }
+//             else if(key == 65  && keyNextPressed != "right" && keyNextPressed != "left" && currentNextTimeStampDif>timeStampDif){
+//               keyNextPressed = "left";  
+//               lastNextArrowKeyPressed = keyNextPressed;
+//               lastNextKeyPressTimeStamp = currentTimeStamp;
+//             }
+//             else if(key == 87  && keyNextPressed != "down" && keyNextPressed != "up" && currentNextTimeStampDif>timeStampDif){
+//               keyNextPressed = "up";  
+//               lastNextArrowKeyPressed = keyNextPressed;
+//               lastNextKeyPressTimeStamp = currentTimeStamp;
+//             }
+//             else if(key == 88 && keyNextPressed != "up" && keyNextPressed != "down" && currentNextTimeStampDif>timeStampDif){
+//               keyNextPressed = "down";  
+//               lastNextArrowKeyPressed = keyNextPressed;
+//               lastNextKeyPressTimeStamp = currentTimeStamp;
+//             }
+//           }
+          
+//           if(key) e.preventDefault();
+// });
+</script>
   </body>
 </html>
 
