@@ -457,6 +457,19 @@
         }
         return true;
       }
+      function isEmptyCellMulti(x, y, array1, array2){
+        for(var i = 0; i < array1.length; i++)
+        {
+          if(array1[i].x == x && array1[i].y == y)
+           return false;
+        }
+        for(var i = 0; i < array2.length; i++)
+        {
+          if(array2[i].x == x && array2[i].y == y)
+           return false;
+        }
+        return true;
+      }
       
       function create_food(){
         foodGroup.remove(foodGroup.children[0]);    
@@ -465,21 +478,23 @@
         {
                       row = Math.round(Math.random()*(platformWidth-snakeCubeSize)/snakeCubeSize);
                       col = Math.round(Math.random()*(platformHeight-snakeCubeSize)/snakeCubeSize);
-                      if(isEmptyCell(row, col, snake_array)) {
+                      if(isEmptyCellMulti(row, col, snake_array,snake_next_array)) {
                 food = {
                   x: row,
                   y: col,
                 };
+                var obj = JSON.parse(localStorage.getItem("user"));
+                ws.send(JSON.stringify({type:"food",room:obj.room, food: food, name:obj.name, id:obj.id  }));
                 
-                var foodCubeGeometry = new THREE.SphereGeometry(snakeCubeSize, 20, 20);
-                foodCube = new THREE.Mesh(foodCubeGeometry, foodcubeMaterial);
-                foodCube.position.set( snakeCubeSize*food.x, snakeCubeSize, snakeCubeSize*food.y );
-                foodCube.castShadow = true;
-                foodCube.receiveShadow = true;
-                foodCube.scale.x = 0.5;
-                foodCube.scale.y = 0.5;
-                foodCube.scale.z = 0.5;
-                  foodGroup.add(foodCube);
+                // var foodCubeGeometry = new THREE.SphereGeometry(snakeCubeSize, 20, 20);
+                // foodCube = new THREE.Mesh(foodCubeGeometry, foodcubeMaterial);
+                // foodCube.position.set( snakeCubeSize*food.x, snakeCubeSize, snakeCubeSize*food.y );
+                // foodCube.castShadow = true;
+                // foodCube.receiveShadow = true;
+                // foodCube.scale.x = 0.5;
+                // foodCube.scale.y = 0.5;
+                // foodCube.scale.z = 0.5;
+                // foodGroup.add(foodCube);
             
                           flag = false;
                      }
@@ -791,8 +806,11 @@
         create_3D_snake();
         create_next_3D_snake();
               
-        create_food();
-      
+        var obj = JSON.parse(localStorage.getItem("user"));
+        if(obj.id == 1){
+          console.log("Creating food");
+          create_food();
+        }
               var ambientLight = new THREE.AmbientLight(0xcccccc);
                scene.add(ambientLight);
                 
@@ -1066,7 +1084,12 @@
               create_next_snake();
               create_3D_snake();
               create_next_3D_snake();
-              create_food();
+
+              var obj = JSON.parse(localStorage.getItem("user"));
+              if(obj.id == 1){
+                console.log("Creating food");
+                create_food();
+              }
               
               gameOverFlag = 0;
                 
@@ -1137,6 +1160,17 @@
           localStorage.setItem("user", JSON.stringify({id : data.id, name: data.name, room : data.room, value:true}));
           $("#start").css("display", "none");
           initLoading();
+        } else if(data.type == "food"){
+          var food = data.food ;
+          var foodCubeGeometry = new THREE.SphereGeometry(snakeCubeSize, 20, 20);
+          foodCube = new THREE.Mesh(foodCubeGeometry, foodcubeMaterial);
+          foodCube.position.set( snakeCubeSize*food.x, snakeCubeSize, snakeCubeSize*food.y );
+          foodCube.castShadow = true;
+          foodCube.receiveShadow = true;
+          foodCube.scale.x = 0.5;
+          foodCube.scale.y = 0.5;
+          foodCube.scale.z = 0.5;
+          foodGroup.add(foodCube);
         }
       };
     </script>
