@@ -500,6 +500,35 @@
                      }
              }
       }
+      function create_food_first(){
+        foodGroup.remove(foodGroup.children[0]);    
+        var flag = true;
+        while(flag)
+        {
+                      row = Math.round(Math.random()*(platformWidth-snakeCubeSize)/snakeCubeSize);
+                      col = Math.round(Math.random()*(platformHeight-snakeCubeSize)/snakeCubeSize);
+                      if(isEmptyCellMulti(row, col, snake_array,snake_next_array)) {
+                food = {
+                  x: row,
+                  y: col,
+                };
+                
+                
+                
+                var foodCubeGeometry = new THREE.SphereGeometry(snakeCubeSize, 20, 20);
+                foodCube = new THREE.Mesh(foodCubeGeometry, foodcubeMaterial);
+                foodCube.position.set( snakeCubeSize*food.x, snakeCubeSize, snakeCubeSize*food.y );
+                foodCube.castShadow = true;
+                foodCube.receiveShadow = true;
+                foodCube.scale.x = 0.5;
+                foodCube.scale.y = 0.5;
+                foodCube.scale.z = 0.5;
+                foodGroup.add(foodCube);
+            
+                      flag = false;
+                     }
+             }
+      }
       
       function setSnakeCube(){
         var tail;
@@ -805,6 +834,8 @@
         
         create_3D_snake();
         create_next_3D_snake();
+
+        create_first_food();
               
         var obj = JSON.parse(localStorage.getItem("user"));
         if(obj.id == 1){
@@ -984,13 +1015,13 @@
           lastFrameTime = time;
           
         }
-//        rotateFood();
+        rotateFood();
         renderer.render(scene, camera);
       }
       
-      // function rotateFood(){
-      //   foodCube.rotation.y += 0.1;
-      // }
+      function rotateFood(){
+        foodCube.rotation.y += 0.1;
+      }
       
       function degToRad(angle){
         return angle*Math.PI/180.00;
@@ -1087,6 +1118,8 @@
               create_next_snake();
               create_3D_snake();
               create_next_3D_snake();
+
+              create_first_food();
 
               var obj = JSON.parse(localStorage.getItem("user"));
               if(obj.id == 1){
