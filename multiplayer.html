@@ -108,22 +108,23 @@
         </center>
 
       </div>
+      <div id="start">
+        <input id="room" placeholder="Room"/>
+        <input id="name" placeholder="Name"/>
+        <button onclick="start_room()">Allocate Room</button>
+      </div>
     </div>  
-    <div id="start">
-      <input id="room" placeholder="Room"/>
-      <input id="name" placeholder="Name"/>
-      <button onclick="start_room()">Allocate Room</button>
-    </div>
+    
   
   
     <div>
     <link rel="stylesheet" href="css/animate.css">
     <script>
-    
-    $(window).load(function() {
-      function start_room(){
+     function start_room(){
         ws.send(JSON.stringify({type: "join", name: $("#name").val(), room: $("#room").val() }))
       }
+    $(window).load(function() {
+     
 //      initLoading();
     });
      
@@ -989,10 +990,10 @@
     <header id="headersection">Simple 3D Snake Game</header>
     </div>
     <script>
-      document.onkeydown = function key_event(evt){
-        var key = evt.keyCode;
-        ws.send({player:name, action: "key", key: key});
-      }
+      // document.onkeydown = function key_event(evt){
+      //   var key = evt.keyCode;
+      //   ws.send({player:name, action: "key", key: key});
+      // }
       ws.onmessage = function (event) {
         console.log(event);
         if(event.data.action == "key"){
@@ -1131,7 +1132,7 @@
           id = event.data.id;
           name = event.data.name;
           room = event.data.room;
-          $("#start_room").css("display", "none");
+          $("#start").css("display", "none");
           initLoading();
         }
       };
