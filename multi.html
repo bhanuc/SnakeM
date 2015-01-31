@@ -205,7 +205,7 @@
     <script>
     
       var container;
-      
+      var stats;
       var messageBox;
       
       var camera, cameraWithSnake, scene, renderer;    
@@ -239,8 +239,9 @@
     
       var snakeXStepSign, snakeYStepSign;
       var snakeXStep, snakeYStep, snakeZStep;
+      var snakeNextXStep, snakeNextYStep, snakeNextZStep;
       
-      var snake_array;
+      var snake_array, snake_next_array;
       var food;
       var keyboard = new THREEx.KeyboardState();
       
@@ -448,6 +449,9 @@
         
         snakeXStep = snake_array[0].x;
         snakeYStep = snake_array[0].y;
+
+        // snakeNextXStep = snake_next_array[0].x;
+        // snakeNextYStep = snake_next_array[0].y;
         
         if( keyPressed == "right"){
           snakeXStep++ ;
@@ -518,6 +522,86 @@
           snakeCube.position.set( snakeCubePosition.x, snakeCubePosition.y, snakeCubePosition.z);
         }
       }
+
+      function setNextSnakeCube(){
+        var tail;
+        var lightLamp = lightGroup.children[0];
+        
+        // snakeXStep = snake_array[0].x;
+        // snakeYStep = snake_array[0].y;
+
+        snakeNextXStep = snake_next_array[0].x;
+        snakeNextYStep = snake_next_array[0].y;
+        
+        if( keyNextPressed == "right"){
+          snakeNextXStep++ ;
+        
+        }else if(keyNextPressed == "left"){
+          snakeNextXStep-- ;
+          
+        }else if(keyNextPressed == "up"){
+          snakeYStep-- ;    
+              
+        }else if(keyNextPressed == "down"){
+          snakeYStep++ ;    
+        
+        }else if(keyNextPressed == "P"){
+          pauseFlag = 1;
+          
+        }
+        
+        if((snakeNextXStep == -1
+          || snakeNextXStep == platformWidth/snakeCubeSize
+          || snakeYStep == -1
+          || snakeYStep == platformHeight/snakeCubeSize
+          || check_collision(snakeNextXStep, snakeYStep, snake_array)))
+        {  
+          gameOverFlag = 1;
+          alertVisibleFlag = 1;
+          triggerAnimation("animated fadeInUp", 1, gameOverString);
+          return;
+        }
+        
+        
+        if(snakeNextXStep == food.x && snakeYStep == food.y)
+        {
+          tail = {x: snakeNextXStep, y: snakeYStep};  
+          create_food();
+          
+          foodScore++;
+        
+          var snakeCubeGeometry = new THREE.CubeGeometry(snakeCubeSize, snakeCubeSize, snakeCubeSize);
+          snakeCube = new THREE.Mesh(snakeCubeGeometry, snakeMaterial);
+          snakeCube.position.set( snakeCubeSize*tail.x, snakeCubeSize, snakeCubeSize*tail.y );
+          snakeCube.castShadow = true;
+          snakeCube.receiveShadow = true;
+          snakeGroup.add(snakeCube);
+      
+          removeScoreTextGeometry();
+          setScoreTextGeometry(10*foodScore);
+          
+        }else
+        {
+          tail = snake_array.pop();
+          tail.x = snakeNextXStep;
+          tail.y = snakeYStep;
+        }
+        
+        snake_array.unshift(tail);
+        var snakeCubeArray = snakeGroup.children;
+      
+        for(var i=0; i<snakeCubeArray.length; i++){
+          
+          var snake_position = snake_array[i];
+          
+          snakeCube = snakeCubeArray[i];
+          var snakeCubePosition = snakeCube.position;
+          snakeCubePosition.x = snakeCubeSize*snake_position.x;
+          snakeCubePosition.z = snakeCubeSize*snake_position.y;
+          
+          snakeCube.position.set( snakeCubePosition.x, snakeCubePosition.y, snakeCubePosition.z);
+        }
+      }
       
       function check_collision(x, y, array){
         
@@ -562,7 +646,7 @@
         container = $( "#canvasframe" )[0];
         messageBox = $("#helpmessage");
       
-        var stats = new Stats();
+        stats = new Stats();
         stats.domElement.style.position = 'absolute';
         stats.domElement.style.left = '10px';
         stats.domElement.style.top = '390px';
@@ -833,6 +917,7 @@
           
           if(pauseFlag==0 && gameOverFlag==0){
             setSnakeCube();
+            setNextSnakeCube();
             checkLevelRatio();
           }
           
