@@ -1122,13 +1122,13 @@
               create_first_food();
 
               var obj = JSON.parse(localStorage.getItem("user"));
-              if(obj.id == 2){
-                console.log("Creating food");
-                var food = create_food();
-                ws.send(JSON.stringify({type:"food",room:obj.room, food: food, name:obj.name, id:obj.id, first: true  }));
-                setSnakeCube();
-                setNextSnakeCube();
-              }
+              // if(obj.id == 2){
+              //   console.log("Creating food");
+              //   var food = create_food();
+              //   ws.send(JSON.stringify({type:"food",room:obj.room, food: food, name:obj.name, id:obj.id, first: true  }));
+              //   setSnakeCube();
+              //   setNextSnakeCube();
+              // }
               
               gameOverFlag = 0;
                 
