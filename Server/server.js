@@ -63,10 +63,10 @@ wss.on('connection', function (ws) {
                                 'error': 'Room is Full'
                             }));
                         } else {
-                            room[mess.room].push = {
+                            room[mess.room].push({
                                 'id': 2,
                                 'ws': ws
-                            };
+                            });
                             console.log(room[mess.room], room[mess.room].length)
                             room[mess.room][0].ws.send(JSON.stringify({
                                 "type": "join",
