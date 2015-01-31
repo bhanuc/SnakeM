@@ -108,31 +108,31 @@ wss.on('connection', function (ws) {
                     }
                     break;
                 case "move":
-                        if( room[mess.room].length == 2) {
-                    console.log("move");
-                    if (mess.hasOwnProperty('room')) {
-                        room[mess.room][0].ws.send(JSON.stringify({
-                            "type": "move",
-                            "move": mess.move,
-                            "name": mess.name,
-                            "id": mess.id
-                        }));
-                        room[mess.room][1].ws.send(JSON.stringify({
-                            "type": "move",
-                            "move": mess.move,
-                            "name": mess.name,
-                            "id": mess.id
-                        }));
+                    if (room[mess.room].length == 2) {
+                        console.log("move");
+                        if (mess.hasOwnProperty('room')) {
+                            room[mess.room][0].ws.send(JSON.stringify({
+                                "type": "move",
+                                "move": mess.move,
+                                "name": mess.name,
+                                "id": mess.id
+                            }));
+                            room[mess.room][1].ws.send(JSON.stringify({
+                                "type": "move",
+                                "move": mess.move,
+                                "name": mess.name,
+                                "id": mess.id
+                            }));
+                        } else {
+                            ws.send(JSON.stringify({
+                                "type": "error",
+                                'error': 'Please Use a Room'
+                            }));
+                        }
+                        break;
                     } else {
-                        ws.send(JSON.stringify({
-                            "type": "error",
-                            'error': 'Please Use a Room'
-                        }));
+                        console.log("waiting for player");
                     }
-                    break;
-                }
-                } else {
-                    console.log("waiting for player");
                 }
             }
         } else {
