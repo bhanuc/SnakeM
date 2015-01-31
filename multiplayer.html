@@ -124,7 +124,7 @@
         ws.send(JSON.stringify({type: "join", name: $("#name").val(), room: $("#room").val() }))
       }
     $(window).load(function() {
-      localStorage.setItem("user",false);
+      localStorage.setItem("user",JSON.stringify({value:false}));
 //      initLoading();
     });
      
@@ -993,7 +993,7 @@
       document.onkeydown = function key_event(evt){
         var key = evt.keyCode;
         var obj = JSON.parse(localStorage.getItem("user"));
-        if(!obj)
+        if(!obj.value)
         ws.send(JSON.stringify({type:"move",room:obj.room, move:key,name:obj.name, id:obj.id  }));
       }
       ws.onmessage = function (event) {
@@ -1134,7 +1134,7 @@
         }
         else if(data.type == "setid"){
           localStorage.clear();
-          localStorage.setItem("user", JSON.stringify({id : data.id, name: data.name, room : data.room}));
+          localStorage.setItem("user", JSON.stringify({id : data.id, name: data.name, room : data.room, value:true}));
           $("#start").css("display", "none");
           initLoading();
         }
