@@ -108,6 +108,7 @@ wss.on('connection', function (ws) {
                         console.log("move");
                     if (mess.hasOwnProperty('room')) {
                         for (var i = 0; i < room[mess.room].length; i++) {
+                            console.log(room[mess.room][i]);
                             room[mess.room][i].ws.send(JSON.stringify({
                                 "type": "move",
                                 "move": mess.move,
