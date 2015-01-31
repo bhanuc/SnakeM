@@ -22,77 +22,81 @@ var wss = new WebSocketServer({
 wss.on('connection', function (ws) {
     ws.on('message', function (message) {
             console.log(JSON.stringify(message));
-            var mess = JSON.parse(message);
+            if (message.type == Object) {
+                var mess = JSON.parse(message);
 
-            if (mess.hasOwnProperty('type')) {
-                switch (mess.type) {
-                case "join":
-                    if (room.hasOwnProperty(mess.room)) {
-                        if (room[mess.room].length > 1) {
-                            ws.send({
-                                "type": "error",
-                                'error': 'Room is Full'
-                            });
+                if (mess.hasOwnProperty('type')) {
+                    switch (mess.type) {
+                    case "join":
+                        if (room.hasOwnProperty(mess.room)) {
+                            if (room[mess.room].length > 1) {
+                                ws.send({
+                                    "type": "error",
+                                    'error': 'Room is Full'
+                                });
+                            } else {
+                                var length = room[mess.room].length;
+                                room[mess.room][length - 1] = {
+                                    'id': 2,
+                                    'ws': ws
+                                };
+                                for (var i = 0; i < room[mess.room].length; i++) {
+                                    room[mess.room][i].ws.send({
+                                        "type": "join",
+                                        "list": room[mess.room],
+                                        "join": 2,
+                                        "name": mess.name
+                                    });
+                                }
+                                ws.send({
+                                    "type": "setid",
+                                    'id': 2,
+                                    'name': mess.name,
+                                    'room': mess.room
+                                });
+                            }
                         } else {
-                            var length = room[mess.room].length;
-                            room[mess.room][length - 1] = {
-                                'id': 2,
+                            room[mess.room] = [{
+                                'id': 1,
                                 'ws': ws
-                            };
+                                }];
                             for (var i = 0; i < room[mess.room].length; i++) {
                                 room[mess.room][i].ws.send({
                                     "type": "join",
                                     "list": room[mess.room],
-                                    "join": 2,
+                                    "join": 1,
                                     "name": mess.name
                                 });
                             }
                             ws.send({
                                 "type": "setid",
-                                'id': 2,
-                                'name': mess.name,
-                                'room': mess.room
+                                'id': 1
                             });
                         }
-                    } else {
-                        room[mess.room] = [{
-                            'id': 1,
-                            'ws': ws
-                                }];
-                        for (var i = 0; i < room[mess.room].length; i++) {
-                            room[mess.room][i].ws.send({
-                                "type": "join",
-                                "list": room[mess.room],
-                                "join": 1,
-                                "name": mess.name
+                        break;
+                    case "move":
+                        if (mess.hasOwnProperty('room')) {
+                            for (var i = 0; i < room[mess.room].length; i++) {
+                                room[mess.room][i].ws.send({
+                                    "type": "move",
+                                    "move": mess.move,
+                                    "name": mess.name,
+                                    "id": mess.id
+                                });
+                            }
+                        } else {
+                            ws.send({
+                                "type": "error",
+                                'error': 'Please Use a Room'
                             });
                         }
-                        ws.send({
-                            "type": "setid",
-                            'id': 1
-                        });
+                        break;
                     }
-                    break;
-                case "move":
-                    if (mess.hasOwnProperty('room')) {
-                        for (var i = 0; i < room[mess.room].length; i++) {
-                            room[mess.room][i].ws.send({
-                                "type": "move",
-                                "move": mess.move,
-                                "name": mess.name,
-                                "id": mess.id
-                            });
-                        }
-                    } else {
-                        ws.send({
-                            "type": "error",
-                            'error': 'Please Use a Room'
-                        });
-                    }
-                    break;
                 }
             }
-        } 
+        } else {
+            console.log("no object");
+        }
         // wss.broadcast(message);
     );
 });
