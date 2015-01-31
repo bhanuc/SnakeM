@@ -108,7 +108,7 @@ wss.on('connection', function (ws) {
                     }
                     break;
                 case "move":
-                    if (room[mess.room].length == 2) {
+                    if (room.hasOwnProperty(mess.room) && room[mess.room].length == 2) {
                         console.log("move");
                         if (mess.hasOwnProperty('room')) {
                             room[mess.room][0].ws.send(JSON.stringify({
