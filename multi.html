@@ -230,7 +230,7 @@
       
       var foodCube, foodcubeMaterial;
       
-      var keyPressed;
+      var keyPressed, keyNextPressed;
       
       var clock = new THREE.Clock();
       var platformCubeTexture;
@@ -299,6 +299,7 @@
           if(keyboard.pressed("p") ){
             if(!(gameOverFlag > 0)){
               keyPressed = "P";
+              keyNextPressed = "P";
               pauseFlag = 1;
           
               messageBox.css("visibility","visible");
@@ -315,6 +316,7 @@
             }
             
             keyPressed = lastArrowKeyPressed;
+            keyNextPressed = lastNextArrowKeyPressed;
             pauseFlag = 0;
             
           }
@@ -322,7 +324,11 @@
           if(keyboard.pressed("s") ){
         
               keyPressed = "right";
+              keyNextPressed = "right";
+
               lastArrowKeyPressed = "right";
+              lastNextArrowKeyPressed = "right";
+
               if(gameOverFlag == 1){
                 alertVisibleFlag = 0;
                 triggerAnimation("animated fadeOutDown", 0, gameOverString);
@@ -337,6 +343,12 @@
                 obj = snakeGroup.children[i];
                 snakeGroup.remove(obj);
               }
+
+              for(var i = snakeNextGroup.children.length-1; i>=0; i--)
+              {
+                obj = snakeNextGroup.children[i];
+                snakeNextGroup.remove(obj);
+              }
               
               gameStepTime = 100;
               foodScore = 0;
@@ -344,7 +356,9 @@
               pauseFlag = 1;
 
               create_snake();
+              create_next_snake();
               create_3D_snake();
+              create_next_3D_snake();
               create_food();
               
               gameOverFlag = 0;
@@ -359,7 +373,8 @@
           if(pauseFlag == 0)
           {
             var currentTimeStamp = Date.now();
-            var timeStampDif = 110;
+
+            var timeStampDif = 10;
             var currentTimeStampDif = currentTimeStamp - lastKeyPressTimeStamp;
             if( key == 39  && keyPressed != "left" && keyPressed != "right" && currentTimeStampDif>timeStampDif){
               keyPressed = "right";  
@@ -380,6 +395,28 @@
             else if(key == 40 && keyPressed != "up" && keyPressed != "down" && currentTimeStampDif>timeStampDif){
               keyPressed = "down";  
               lastArrowKeyPressed = keyPressed;
+              lastKeyPressTimeStamp = currentTimeStamp;
+            }
+
+            if( key == 68  && keyNextPressed != "left" && keyNextPressed != "right" && currentTimeStampDif>timeStampDif){
+              keyNextPressed = "right";  
+              lastNextArrowKeyPressed = keyNextPressed;
+              lastKeyPressTimeStamp = currentTimeStamp;
+              
+            }
+            else if(key == 65  && keyNextPressed != "right" && keyNextPressed != "left" && currentTimeStampDif>timeStampDif){
+              keyNextPressed = "left";  
+              lastNextArrowKeyPressed = keyNextPressed;
+              lastKeyPressTimeStamp = currentTimeStamp;
+            }
+            else if(key == 87  && keyNextPressed != "down" && keyNextPressed != "up" && currentTimeStampDif>timeStampDif){
+              keyNextPressed = "up";  
+              lastNextArrowKeyPressed = keyNextPressed;
+              lastKeyPressTimeStamp = currentTimeStamp;
+            }
+            else if(key == 88 && keyNextPressed != "up" && keyNextPressed != "down" && currentTimeStampDif>timeStampDif){
+              keyNextPressed = "down";  
+              lastNextArrowKeyPressed = keyNextPressed;
               lastKeyPressTimeStamp = currentTimeStamp;
             }
           }
@@ -524,11 +561,8 @@
       }
 
       function setNextSnakeCube(){
-        var tail;
+        var nextTail;
         var lightLamp = lightGroup.children[0];
-        
-        // snakeXStep = snake_array[0].x;
-        // snakeYStep = snake_array[0].y;
 
         snakeNextXStep = snake_next_array[0].x;
         snakeNextYStep = snake_next_array[0].y;
@@ -540,10 +574,10 @@
           snakeNextXStep-- ;
           
         }else if(keyNextPressed == "up"){
-          snakeYStep-- ;    
+          snakeNextYStep-- ;    
               
         }else if(keyNextPressed == "down"){
-          snakeYStep++ ;    
+          snakeNextYStep++ ;    
         
         }else if(keyNextPressed == "P"){
           pauseFlag = 1;
@@ -552,9 +586,9 @@
         
         if((snakeNextXStep == -1
           || snakeNextXStep == platformWidth/snakeCubeSize
-          || snakeYStep == -1
-          || snakeYStep == platformHeight/snakeCubeSize
-          || check_collision(snakeNextXStep, snakeYStep, snake_array)))
+          || snakeNextYStep == -1
+          || snakeNextYStep == platformHeight/snakeCubeSize
+          || check_collision(snakeNextXStep, snakeNextYStep, snake_next_array)))
         {  
           gameOverFlag = 1;
           alertVisibleFlag = 1;
@@ -563,36 +597,36 @@
         }
         
         
-        if(snakeNextXStep == food.x && snakeYStep == food.y)
+        if(snakeNextXStep == food.x && snakeNextYStep == food.y)
         {
-          tail = {x: snakeNextXStep, y: snakeYStep};  
+          nextTail = {x: snakeNextXStep, y: snakeNextYStep};  
           create_food();
           
           foodScore++;
         
           var snakeCubeGeometry = new THREE.CubeGeometry(snakeCubeSize, snakeCubeSize, snakeCubeSize);
-          snakeCube = new THREE.Mesh(snakeCubeGeometry, snakeMaterial);
-          snakeCube.position.set( snakeCubeSize*tail.x, snakeCubeSize, snakeCubeSize*tail.y );
+          snakeCube = new THREE.Mesh(snakeCubeGeometry, snakeNextMaterial);
+          snakeCube.position.set( snakeCubeSize*nextTail.x, snakeCubeSize, snakeCubeSize*nextTail.y );
           snakeCube.castShadow = true;
           snakeCube.receiveShadow = true;
-          snakeGroup.add(snakeCube);
+          snakeNextGroup.add(snakeCube);
       
           removeScoreTextGeometry();
           setScoreTextGeometry(10*foodScore);
           
         }else
         {
-          tail = snake_array.pop();
-          tail.x = snakeNextXStep;
-          tail.y = snakeYStep;
+          nextTail = snake_next_array.pop();
+          nextTail.x = snakeNextXStep;
+          nextTail.y = snakeNextYStep;
         }
         
-        snake_array.unshift(tail);
-        var snakeCubeArray = snakeGroup.children;
+        snake_next_array.unshift(nextTail);
+        var snakeCubeArray = snakeNextGroup.children;
       
         for(var i=0; i<snakeCubeArray.length; i++){
           
-          var snake_position = snake_array[i];
+          var snake_position = snake_next_array[i];
           
           snakeCube = snakeCubeArray[i];
           var snakeCubePosition = snakeCube.position;
