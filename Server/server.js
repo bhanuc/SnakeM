@@ -9,13 +9,15 @@ var server = http.createServer(app);
 server.listen(8080);
 
 var wss = new WebSocketServer({server: server});
+wss.broadcast = function(data) {
+  for (var i in this.clients)
+    this.clients[i].send(data);
+};
+
+// use like this:
 wss.on('connection', function(ws) {
-  var id = setInterval(function() {
-    ws.send(JSON.stringify(process.memoryUsage()), function() { /* ignore errors */ });
-  }, 100);
-  console.log('started client interval');
-  ws.on('close', function() {
-    console.log('stopping client interval');
-    clearInterval(id);
+  ws.on('message', function(message) {
+    wss.broadcast(message);
   });
 });
+

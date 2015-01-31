@@ -8,7 +8,13 @@
     <link rel="stylesheet" href="css/animate.css">
     <link rel="stylesheet" href="css/snake.css">
     <script>
-
+      var ws = new WebSocket('ws://128.199.124.144:8080');
+              ws.onmessage = function (event) {
+                  console.log(event);
+              };
+    function sendmessage(){
+        ws.send(JSON.stringify({'helloe': 'ss'}));
+    }
       var wegGLSupportFlag = 1;
       var timer;
       var noWebGLSupportString = "<b>Sorry!!<br><br>Your browser does not have WebGL support.<br><br>Please use latest Chrome browser.<br><br><br></b>";
@@ -978,25 +984,12 @@
         return angle*180.00/Math.PI;
       }
   
-      
+
     </script>
   
      <canvas id="canvasframe" class="renderframe"></canvas>
-    <!-- <div class="sectionBox" id="leftsection"><b>Controls:</b><br>Start/Restart: S<br>Movement: Arrow Keys<br>Pause: P<br>Resume: R<br><br><b>API:</b><br></div> -->
-    <div class="sectionBox" id="leftsection">
-            <button class="key" data-code="83">S</button> <br><br><br>
-            <button class="key" data-code="38"> up</button><br>
-            <button class="key" data-code="37">left</button>
-            <button class="key" data-code="39">right</button><br >
-            <button class="key" data-code="40">down</button><br>
-            <!--<b>Controls:</b>
-            <br>Start/Restart: S<br>
-            Movement: Arrow Keys<br>
-            Pause: P<br>
-            Resume: R<br>
-            <br>
-            <b>API:</b><br>-->
-        </div>
+    <div class="sectionBox" id="leftsection"><b>Controls:</b><br>Start/Restart: S<br>Movement: Arrow Keys<br>Pause: P<br>Resume: R<br><br><b>API:</b><br>
+         <button  onclick="sendmessage()">SEND M</button></div>
             
     <div class="alertmessage" id="helpmessage">Press S to Start Game</div>
     <header id="headersection">Simple 3D Snake Game</header>
