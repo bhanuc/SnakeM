@@ -996,6 +996,7 @@
       // }
       ws.onmessage = function (event) {
         console.log(event);
+        var data = JSON.parse(event.data)
         if(event.data.action == "key"){
           var key = event.data.key ;
           var identity = event.data.id ;
@@ -1128,10 +1129,10 @@
               }
           }
         }
-        else if(event.data.type == "setid"){
-          id = event.data.id;
-          name = event.data.name;
-          room = event.data.room;
+        else if(data.type == "setid"){
+          id = data.id;
+          name = data.name;
+          room = data.room;
           $("#start").css("display", "none");
           initLoading();
         }
