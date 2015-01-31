@@ -990,14 +990,14 @@
     <header id="headersection">Simple 3D Snake Game</header>
     </div>
     <script>
-      // document.onkeydown = function key_event(evt){
-      //   var key = evt.keyCode;
-      //   ws.send({player:name, action: "key", key: key});
-      // }
+      document.onkeydown = function key_event(evt){
+        var key = evt.keyCode;
+        ws.send(JSON.stringify({type:"move",room:room, move:key,name:name, id:id  }));
+      }
       ws.onmessage = function (event) {
         console.log(event);
         var data = JSON.parse(event.data)
-        if(event.data.action == "key"){
+        if(data.action == "move"){
           var key = event.data.key ;
           var identity = event.data.id ;
           if(key == 80 ){           //P
