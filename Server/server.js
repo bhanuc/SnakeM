@@ -67,6 +67,7 @@ wss.on('connection', function (ws) {
                                 'id': 2,
                                 'ws': ws
                             };
+                            console.log(room[mess.room], room[mess.room].length)
                             room[mess.room][0].ws.send(JSON.stringify({
                                 "type": "join",
                                 // "list": room[mess.room],
