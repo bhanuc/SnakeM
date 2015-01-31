@@ -21,10 +21,11 @@ var wss = new WebSocketServer({
 
 wss.on('connection', function (ws) {
     ws.on('message', function (message) {
-            console.log(JSON.stringify(message));
+            console.log(JSON.stringify(message),message);
 //            if (message.type == Object) {
                 var mess = JSON.parse(message);
-
+                console.log(mess);
+                
                 if (mess.hasOwnProperty('type')) {
                     switch (mess.type) {
                     case "join":
