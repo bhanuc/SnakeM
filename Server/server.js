@@ -22,7 +22,7 @@ var wss = new WebSocketServer({
 wss.on('connection', function (ws) {
     ws.on('message', function (message) {
             console.log(JSON.stringify(message));
-            if (message.type == Object) {
+//            if (message.type == Object) {
                 var mess = JSON.parse(message);
 
                 if (mess.hasOwnProperty('type')) {
@@ -93,9 +93,9 @@ wss.on('connection', function (ws) {
                         break;
                     }
             }
-        } else {
-            console.log("no object");
-        }
+//        } else {
+//            console.log("no object");
+//        }
         // wss.broadcast(message);
     });
 });
