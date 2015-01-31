@@ -8,6 +8,8 @@ app.use(express.static(__dirname + '/public'));
 var server = http.createServer(app);
 server.listen(8080);
 
+var room = {};
+
 var wss = new WebSocketServer({server: server});
 wss.broadcast = function(data) {
   for (var i in this.clients)
@@ -16,8 +18,9 @@ wss.broadcast = function(data) {
 
 // use like this:
 wss.on('connection', function(ws) {
+    console.log(ws);
   ws.on('message', function(message) {
-    wss.broadcast(message);
+        wss.broadcast(message);
   });
 });
 
