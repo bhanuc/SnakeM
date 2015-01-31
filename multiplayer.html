@@ -472,7 +472,7 @@
       }
       
       function create_food(){
-        foodGroup.remove(foodGroup.children[0]);    
+        // foodGroup.remove(foodGroup.children[0]);    
         var flag = true;
         while(flag)
         {
@@ -1200,6 +1200,7 @@
           $("#start").css("display", "none");
           initLoading();
         } else if(data.type == "food"){
+          foodGroup.remove(foodGroup.children[0]);
           var food = data.food ;
           var foodCubeGeometry = new THREE.SphereGeometry(snakeCubeSize, 20, 20);
           foodCube = new THREE.Mesh(foodCubeGeometry, foodcubeMaterial);
