@@ -17,8 +17,8 @@ wss.on('connection', function(ws) {
   });
     
   ws.send(JSON.stringify({'connected': true}));
-  ws.on('move', function(data, flags) {
-    ws.send(JSON.stringify({'move': data}));
-  });
+//  ws.on('move', function(data, flags) {
+//    ws.send(JSON.stringify({'move': data}));
+//  });
 });
 
