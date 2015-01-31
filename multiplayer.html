@@ -124,7 +124,7 @@
         ws.send(JSON.stringify({type: "join", name: $("#name").val(), room: $("#room").val() }))
       }
     $(window).load(function() {
-     
+      localStorage.setItem("user",false);
 //      initLoading();
     });
      
@@ -993,6 +993,7 @@
       document.onkeydown = function key_event(evt){
         var key = evt.keyCode;
         var obj = JSON.parse(localStorage.getItem("user"));
+        if(!obj)
         ws.send(JSON.stringify({type:"move",room:obj.room, move:key,name:obj.name, id:obj.id  }));
       }
       ws.onmessage = function (event) {
